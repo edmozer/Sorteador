@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteador de Reunião</title>
+    <style>
+body {
+    font-family: sans-serif;
+    background-color: #007bff; /* Azul anil */
+    color: black; /* Texto preto */
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white; /* Caixa branca */
+    border-radius: 10px; /* Bordas arredondadas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+
+input[type="text"],
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px; /* Bordas arredondadas para inputs */
+    box-sizing: border-box;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #0056b3; /* Azul escuro para o botão */
+    color: white;
+    border: none;
+    border-radius: 5px; /* Bordas arredondadas para o botão */
+    cursor: pointer;
+}
+
+.resultado {
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px; /* Bordas arredondadas para o resultado */
+}
+
+.titulo {
+    font-weight: bold;
+    color: black; /* Texto preto para o título */
+}
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sorteador de Reunião</h1>
+
+        <label for="participantes">Nomes dos Participantes (separados por vírgula):</label>
+        <input type="text" id="participantes" required>
+
+        <label for="presidente">Presidente:</label>
+        <input type="text" id="presidente" required>
+
+        <label for="diretor">Diretor:</label>
+        <input type="text" id="diretor" required>
+
+        <button onclick="sortear()">Sortear</button>
+
+        <div class="resultado" id="resultado"></div>
+    </div>
+
+    <script>
+        function sortear() {
+            const participantesString = document.getElementById('participantes').value;
+            const participantes = participantesString.split(',').map(nome => nome.trim());
+
+            const oracao = sortearParticipante(participantes);
+            const pensamento = sortearParticipante(participantes.filter(nome => nome !== oracao));
+            const oracaoFinal = sortearParticipante(participantes.filter(nome => nome !== oracao && nome !== pensamento));
+
+            const presidente = document.getElementById('presidente').value;
+            const diretor = document.getElementById('diretor').value;
+
+            const resultado = `Reunião\n\nDirigido por: ${diretor}\n\nPresidido por: ${presidente}\n\nPrimeira Oração: ${oracao}\nPensamento: ${pensamento}\nOração Final: ${oracaoFinal}`;
+
+            document.getElementById('resultado').textContent = resultado;
+        }
+
+        function sortearParticipante(participantes) {
+            if (participantes.length === 0) {
+                return '';
+            }
+
+            const indexAleatorio = Math.floor(Math.random() * participantes.length);
+            return participantes[indexAleatorio];
+        }
+    </script>
+</body>
+</html>
